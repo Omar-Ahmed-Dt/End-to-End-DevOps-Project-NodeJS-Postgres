@@ -70,14 +70,6 @@ After running the queries, you should be able to verify that the new entries hav
 
 ## Destroying the Infrastructure
 
-In case you need to tear down the infrastructure and services that you have deployed, a script named `destroy.sh` is provided in the repository. This script will:
-
-- Log in to Amazon ECR.
-- Delete the specified Docker image from the ECR repository.
-- Delete the Kubernetes deployment and associated resources.
-- Delete the Kubernetes namespace.
-- Destroy the AWS resources created by Terraform.
-
 ### Before you run
 
 1. Open the `destroy.sh` script.
@@ -101,5 +93,3 @@ In case you need to tear down the infrastructure and services that you have depl
    ```bash
    ./destroy.sh
    ```
-
-This script will execute another script `ecr-img-delete.sh` which will delete all the images on the `ECR` to make sure the `ECR` is empty then `terraform` commands to destroy all resources related to your deployment. It is essential to verify that the script has completed successfully to ensure that all resources have been cleaned up and no unexpected costs are incurred.
