@@ -2,7 +2,7 @@
 
 CLUSTER_NAME=cluster-1-test
 NAMESPACE=default
-REGION=eu-central-1
+REGION=us-east-1
 RELEASE_NAME=my-argo-cd
 
 #Update kubeconfig
