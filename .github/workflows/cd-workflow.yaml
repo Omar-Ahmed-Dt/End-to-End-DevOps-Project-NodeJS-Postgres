@@ -9,10 +9,10 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     # Check if the CI workflow was successful
     if: github.event.workflow_run.conclusion == 'success'
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -22,12 +22,12 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-central-1
+          aws-region: us-east-1
 
       - name: Set up Kubectl
         uses: azure/setup-kubectl@v1
         with:
-          version: 'latest'
+          version: "latest"
 
       - name: Verify kubectl
         run: |
@@ -40,4 +40,3 @@ jobs:
           echo "${{ secrets.KUBECONFIG_SECRET }}" | base64 -d > kubeconfig
           export KUBECONFIG=kubeconfig
           kubectl apply -n $NAMESPACE -f k8s
-
