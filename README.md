@@ -8,7 +8,6 @@
 - [Terraform](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli) installed
 - [Helm](https://helm.sh/docs/intro/install/) installed
 - [GitHub_CLI](https://github.com/cli/cli) installed
-- [K9s](https://k9scli.io/topics/install/) installed
 - [Beekeeper-Studio](https://www.beekeeperstudio.io/) `For Database Access`
 
 ## Before you run the script
@@ -44,8 +43,6 @@ The `build.sh` script contains a set of variables that you need to customize acc
 
 After updating these variables, the script will use them to deploy your application, ensuring that the correct resources are targeted and that your application is accessible via your specified domain.
 
-**Reminder**: Always double-check the variable values to match your AWS setup and application requirements before running the `build.sh` script.
-
 ### Update application domain
 
 1. Navigate to `terraform/monitoring.tf`
@@ -70,32 +67,6 @@ After updating these variables, the script will use them to deploy your applicat
               - grafana.[YOUR_DOMAIN]
 ```
 
-`IMPORTANT: Ensure you have updated the domain for all the services, Grafana, Alertmanager and Prometheus`
-
-## Deployment Script Overview
-
-The `build.sh` script automates the process of setting up the infrastructure on AWS, building a Docker image for the Go Survey app, and deploying it to the Kubernetes cluster. Here's a step-by-step explanation of what the script does:
-
-1. **Creating Infrastructure**: Sets up the AWS EKS cluster, ECR repository, and EBS volumes using Terraform.
-
-2. **Update Kubeconfig**: Configures `kubectl` to interact with the newly created EKS cluster.
-
-3. **Build Docker Image**: Removes any existing Docker images and builds a new one with the Go Survey app.
-
-4. **Push Docker Image**: Logs into ECR and pushes the new Docker image to the repository.
-
-5. **Generate DB Password**: Generates a random password for the Postgres database.
-
-6. **K8s Secret**: Creates a secret key for the Postgres database from the previously generated password.
-
-7. **Deploy to Kubernetes**: Creates the specified namespace if it doesn't exist and applies the Kubernetes manifests from the `k8s` directory.
-
-8. **Wait for Deployment**: Waits for 60 seconds to allow the Kubernetes resources to be deployed.
-
-9. **Ingress URL**: Retrieves the Ingress URL for accessing the deployed application.
-
-10. **Application URLs**: Prints out the URLs for accessing the Go Survey app and the monitoring tools (Alertmanager, Prometheus, Grafana).
-
 ## How to Run
 
 1. Clone the repository and navigate to the root directory.
@@ -113,24 +84,6 @@ The `build.sh` script automates the process of setting up the infrastructure on 
    ```
 
 4. Follow the post-deployment steps printed by the script to update your DNS records with the provided Ingress URL.
-
-## Post-Deployment
-
-Once the script has completed, you will need to add DNS records to point your domain to the services deployed. Follow the instructions outputted by the script to set up CNAME records for your application.
-
-1. Access the `Zone Editor` in the Cpanel of your domain
-
-   <img src=imgs/cpanel-1.png>
-
-2. Next to your domain Add `CNAME Record`
-
-   <img src=imgs/cpanel-2.png>
-
-3. In the `NAME` add `YOUR_APP_NAME.YOUR_DOMAIN` and add the `INGRESS_URL` in `CNAME`
-
-   <img src=imgs/cpanel-3.png>
-
-**Repeat the same steps for the rest of the services**
 
 ## Accessing Your Services
 
@@ -221,37 +174,6 @@ To add your `KUBECONFIG` to GitHub Secrets, follow these steps:
 This `KUBECONFIG_SECRET` is then used by the CD workflow to authenticate with your Kubernetes cluster and apply the required configurations.
 
 **Important**: Be cautious with your `KUBECONFIG` data as it provides administrative access to your Kubernetes cluster. Only store it in secure locations, and never expose it in logs or to unauthorized users.
-
-## Interacting with the application
-
-To access and manage the `Database` from your local machine, you can use `k9s` to port forward the service and then connect to it using [BeeKeeper](https://www.beekeeperstudio.io/).
-
-### Accessing the Service with k9s
-
-1. Open `k9s` in your terminal.
-2. Navigate to the `services` section by typing `:svc` and pressing `Enter`.
-3. Search for the service named `postgres-service`.
-4. With the `postgres-service` highlighted, press `Shift+F` to set up port forwarding to your local machine.
-
-<img src=imgs/db-srv.png>
-
-### Connecting to the Database
-
-Once you've port forwarded the `postgres-service`:
-
-1. Open Beekeeper.
-2. Connect to the Postgres Database using the localhost address and the port `5432`.
-3. Use the `USERNAME` you added in the k8s environment variable.
-4. Get the `PASSWORD` from k8s secrets using `k9s`.
-
-   - Navigate to `secrets`
-
-   - Find `db-password-secret`
-
-   - Tab on `x` in your keyboard to decode the generated password
-
-<img src=imgs/k8s-secret.png>
-<img src=imgs/secret-decode.png>
 
 ### Adding Data to the Database with Beekeeper
 
