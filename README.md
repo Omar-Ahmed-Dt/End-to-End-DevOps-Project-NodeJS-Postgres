@@ -1,11 +1,5 @@
 # End-to-end-DevOps | Nodejs-Postgres App
 
-<img src=imgs/cover.png>
-
-This repository contains scripts and Kubernetes manifests for deploying the Nodejs application with Postgres Database on an AWS EKS cluster with an accompanying ECR repository and EBS volumes. The deployment includes setting up an Ingress controller, monitoring with Prometheus and Grafana, and a continuous deployment pipeline.
-
-🎥 For a detailed walkthrough into this project, check out my video on YouTube: [HERE](https://youtu.be/2ra-Ts9tYQ8).
-
 ## Prerequisites
 
 - [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) configured with appropriate permissions
@@ -323,11 +317,3 @@ In case you need to tear down the infrastructure and services that you have depl
    ```
 
 This script will execute another script `ecr-img-delete.sh` which will delete all the images on the `ECR` to make sure the `ECR` is empty then `terraform` commands to destroy all resources related to your deployment. It is essential to verify that the script has completed successfully to ensure that all resources have been cleaned up and no unexpected costs are incurred.
-
-## Support
-
-If you encounter any issues or require assistance, please file an issue in the repository.
-
-## Contributing
-
-Contributions are welcome! Please open a pull request with your proposed changes.
