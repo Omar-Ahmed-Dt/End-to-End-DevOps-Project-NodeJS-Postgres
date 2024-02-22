@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Variables
-REGION="REGION" #Make sure it is the same in the terraform variables
+REGION="us-east-1" #Make sure it is the same in the terraform variables
 REPOSITORY_NAME="nodejs-app"
 BUCKET_NAME=$(cd terraform && terraform output --raw bucket_name)
 # End Variables
